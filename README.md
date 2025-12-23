@@ -436,6 +436,10 @@ buildscript {
 - 🐛 [Issue Tracker](https://github.com/MarenTech/linkzly-android/issues)
 - 📧 Email: support@linkzly.com
 
+## Example Apps
+
+- **iOS Example**: [linkzly-ios-sdk-example](https://github.com/MarenTech/linkzly-ios-sdk-example)
+
 ## Related SDKs
 
 - **iOS SDK**: [linkzly-ios](https://github.com/MarenTech/linkzly-ios)
