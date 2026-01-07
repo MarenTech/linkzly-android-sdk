@@ -260,12 +260,53 @@ adb shell am start -W -a android.intent.action.VIEW \
 
 ## API Reference
 
-### Attribution Tracking
+### Lifecycle Events (Automatic)
 
-The SDK automatically tracks:
-- **App Installs** - First-time app launches with Google Play Install Referrer
-- **App Opens** - Subsequent app launches and background/foreground transitions
-- **User Sessions** - Automatic session tracking with 30-minute timeout
+The Android SDK automatically tracks application lifecycle events using `ProcessLifecycleOwner`.
+*   **Install**: Tracked on the first launch.
+*   **Open**: Tracked on every app launch.
+
+### Session Management (Manual)
+
+Use these methods to manually control session boundaries.
+
+```kotlin
+// Start a session
+LinkzlySDK.startSession()
+
+// End a session
+LinkzlySDK.endSession()
+```
+
+### Commerce Events
+
+Track revenue and in-app purchases.
+
+```kotlin
+// Track a purchase
+val purchaseParams = mapOf(
+    "amount" to 9.99,
+    "currency" to "USD",
+    "sku" to "premium_monthly"
+)
+LinkzlySDK.trackPurchase(parameters = purchaseParams)
+```
+
+### Custom Events
+
+Track any user interaction.
+
+```kotlin
+// Track a custom event
+LinkzlySDK.trackEvent("tutorial_completed", parameters = mapOf("step" to 5))
+```
+
+### Batch Tracking
+
+```kotlin
+// Track multiple events
+LinkzlySDK.trackEventBatch(listOf(event1, event2))
+```
 
 ### Deep Linking
 
@@ -285,20 +326,6 @@ LinkzlySDK.trackInstall { result ->
         deepLinkData?.let { navigateTo(it.path) }
     }
 }
-```
-
-### Custom Events
-
-```kotlin
-// Simple event
-LinkzlySDK.trackEvent("level_completed")
-
-// Event with parameters
-LinkzlySDK.trackEvent("level_completed", mapOf(
-    "level" to 5,
-    "score" to 12500,
-    "time" to 145
-))
 ```
 
 ### User Management
@@ -339,27 +366,6 @@ val visitorId = LinkzlySDK.getVisitorID()
 
 // Reset visitor ID (e.g., on logout)
 LinkzlySDK.resetVisitorID()
-```
-
-### Batch Event Tracking
-
-```kotlin
-val events = listOf(
-    mapOf(
-        "eventType" to "custom",
-        "eventName" to "level_completed",
-        "customData" to mapOf("level" to 1)
-    ),
-    mapOf(
-        "eventType" to "custom",
-        "eventName" to "item_purchased",
-        "customData" to mapOf("item" to "power_up")
-    )
-)
-
-LinkzlySDK.trackEventBatch(events) { result ->
-    result.onSuccess { Log.d("Linkzly", "Batch sent") }
-}
 ```
 
 ### Flush Events
